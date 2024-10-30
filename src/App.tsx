@@ -1,13 +1,15 @@
-import { useCallback, useState } from 'react';
+import { ChangeEvent, useCallback, useState } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
 import { AddTodo, List } from './views/widgets';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Todo } from './types';
+import classNames from 'classnames';
 
 const mock: Todo[] = [
   {
+    id: 1,
     title: 'My first todo',
     text: (
       <>
@@ -17,6 +19,7 @@ const mock: Todo[] = [
     start: Date.now() - 300,
   },
   {
+    id: 2,
     title: 'My second todo',
     text: (
       <>
@@ -26,6 +29,7 @@ const mock: Todo[] = [
     start: Date.now() - 30,
   },
   {
+    id: 3,
     title: 'My third todo',
     text: (
       <>
@@ -38,21 +42,60 @@ const mock: Todo[] = [
 
 function App() {
   const [todolist, setTodolist] = useState<Todo[]>(mock);
+  const [filter, setFilter] = useState<'All' | 'Active' | 'Done'>('All');
   const handleAddTodo = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const data = new FormData(e.currentTarget);
       const todo = data.get('todo') as string;
       const text = data.get('text') as string;
-      setTodolist([{ title: todo, text: text || '' }].concat(todolist));
+      setTodolist([{ title: todo, text: text || '', id: todolist.length + 1 }].concat(todolist));
       e.currentTarget.reset();
     },
     [todolist],
   );
+
+  const handleFinish = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const id = e.currentTarget.dataset.id;
+      if (id) {
+        setTodolist(todolist.map((el) => (el.id === Number(id) ? { ...el, complete: !el.complete } : el)));
+      }
+    },
+    [todolist],
+  );
+
+  const handleFilterChange = (e) => {
+    const { filter } = e.currentTarget.dataset;
+    setFilter(filter);
+  };
   return (
     <>
       <AddTodo handleAddTodo={handleAddTodo} />
-      <List list={todolist} />
+      {filter === 'All' && <List list={todolist} onDone={handleFinish} />}
+      {filter === 'Active' && <List list={todolist.filter((el) => !el.complete)} onDone={handleFinish} />}
+      {filter === 'Done' && <List list={todolist.filter((el) => el.complete)} onDone={handleFinish} />}
+      <button
+        onClick={handleFilterChange}
+        data-filter="All"
+        className={classNames('button', filter === 'All' && 'active')}
+      >
+        All
+      </button>
+      <button
+        onClick={handleFilterChange}
+        data-filter="Active"
+        className={classNames('button', filter === 'Active' && 'active')}
+      >
+        Active
+      </button>
+      <button
+        onClick={handleFilterChange}
+        data-filter="Done"
+        className={classNames('button', filter === 'Done' && 'active')}
+      >
+        Done
+      </button>
     </>
   );
 }

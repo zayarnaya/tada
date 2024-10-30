@@ -1,5 +1,5 @@
-import { FC, ReactNode } from 'react';
-import Accordion from 'react-bootstrap/Accordion';
+import { ChangeEventHandler, FC, ReactNode } from 'react';
+
 import classNames from 'classnames';
 
 import styles from './List.module.scss';
@@ -10,17 +10,18 @@ interface Props {
   className?: string;
   children?: ReactNode;
   list: Todo[];
+  onDone: ChangeEventHandler<HTMLInputElement>;
 }
 
 export const List: FC<Props> = (props: Props) => {
-  const { children, className, list } = props;
+  const { children, className, list, onDone } = props;
   return (
-    <Accordion alwaysOpen>
+    <ul className={classNames(styles.list, className)}>
       {list.map((el, index) => (
-        <ListItem eventKey={`todo#${index}`} header={el.title}>
-          {el.text}
+        <ListItem key={`todo#${index}`} onDone={onDone} id={el.id} complete={el.complete}>
+          {el.title}
         </ListItem>
       ))}
-    </Accordion>
+    </ul>
   );
 };

@@ -8,3 +8,7 @@
 /* .accordion-header.empty button {
   display: none;
 } */
+
+.button.active {
+  text-decoration: underline;
+}

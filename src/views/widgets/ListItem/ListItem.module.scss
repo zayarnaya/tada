@@ -1,0 +1,17 @@
+.item {
+  display: grid;
+  grid-template-columns: 50px auto;
+  border-bottom: 1px solid #eee;
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+}
+
+.title {
+  margin: 0;
+  &.done {
+    color: #ccc;
+    text-decoration: line-through;
+  }
+}
