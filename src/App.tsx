@@ -69,12 +69,17 @@ function App() {
     const { filter } = e.currentTarget.dataset;
     setFilter(filter);
   };
+
+  const deleteCompleted = () => {
+    setTodolist(todolist.filter((el) => !el.complete));
+  };
   return (
     <>
       <AddTodo handleAddTodo={handleAddTodo} />
       {filter === 'All' && <List list={todolist} onDone={handleFinish} />}
       {filter === 'Active' && <List list={todolist.filter((el) => !el.complete)} onDone={handleFinish} />}
       {filter === 'Done' && <List list={todolist.filter((el) => el.complete)} onDone={handleFinish} />}
+      <p>Only {todolist.filter((el) => !el.complete).length} left!</p>
       <button
         onClick={handleFilterChange}
         data-filter="All"
@@ -96,6 +101,7 @@ function App() {
       >
         Done
       </button>
+      <button onClick={deleteCompleted}>Delete completed tasks</button>
     </>
   );
 }
