@@ -3,20 +3,22 @@ import './App.css';
 import { AddTodo, Filters, List, Pagination, Sorting } from './views/widgets';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Filter, Tags, Todo } from './types';
-import { addPriority, changePriority, LocaleContext, sortByTag } from './utils';
+import { addPriority, changePriority, getSavedTodos, LocaleContext, sortByTag } from './utils';
 import { itemsPerPage, mapFilterFuncs } from './consts/consts';
 import { localeSet } from './consts/localisation';
 import classNames from 'classnames';
+import { Wrapper } from './views/widgets/Wrapper/Wrapper';
 
 function App() {
-  const [todolist, setTodolist] = useState<Todo[]>([]);
+  const todos = getSavedTodos();
+  const [todolist, setTodolist] = useState<Todo[]>(todos);
   const [filter, setFilter] = useState<Filter>('All');
   const [activePage, setActivePage] = useState(1);
   const [locale, setLocale] = useState<'en' | 'ru'>('en');
 
   useEffect(() => {
-    document.title = localeSet[locale].title;
-  }, [locale]);
+    localStorage.setItem('todolist', JSON.stringify(todolist, null, 2));
+  }, [todolist]);
 
   const handleAddTodo = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -97,39 +99,49 @@ function App() {
   }, []);
   return (
     <LocaleContext.Provider value={locale}>
-      <button data-locale="ru" className={classNames('btn', locale === 'ru' && 'active')} onClick={handleLocaleChange}>
-        ru
-      </button>
-      <button data-locale="en" className={classNames('btn', locale === 'en' && 'active')} onClick={handleLocaleChange}>
-        en
-      </button>
-      {!todolist.length && <p>{localeSet[locale].greet}</p>}
-      {!!todolist.length && <Sorting sort={handleSorting} />}
-      <AddTodo handleAddTodo={handleAddTodo} />
-      <List
-        onEdit={handleEditTodo}
-        increasePriority={increasePriority}
-        decreasePriority={decreasePriority}
-        list={(filter === 'All' ? todolist : todolist.filter(mapFilterFuncs[filter])).slice(
-          (activePage - 1) * itemsPerPage,
-          Math.min(activePage * itemsPerPage, todolist.length),
-        )}
-        onDone={handleFinish}
-        onDelete={handleDeleteTodo}
-      />
+      <Wrapper>
+        <button
+          data-locale="ru"
+          className={classNames('btn', locale === 'ru' && 'active')}
+          onClick={handleLocaleChange}
+        >
+          ru
+        </button>
+        <button
+          data-locale="en"
+          className={classNames('btn', locale === 'en' && 'active')}
+          onClick={handleLocaleChange}
+        >
+          en
+        </button>
+        {!todolist.length && <p>{localeSet[locale].greet}</p>}
+        {!!todolist.length && <Sorting sort={handleSorting} />}
+        <AddTodo handleAddTodo={handleAddTodo} />
+        <List
+          onEdit={handleEditTodo}
+          increasePriority={increasePriority}
+          decreasePriority={decreasePriority}
+          list={(filter === 'All' ? todolist : todolist.filter(mapFilterFuncs[filter])).slice(
+            (activePage - 1) * itemsPerPage,
+            Math.min(activePage * itemsPerPage, todolist.length),
+          )}
+          onDone={handleFinish}
+          onDelete={handleDeleteTodo}
+        />
 
-      {!!todolist.length && (
-        <>
-          <Pagination activePage={activePage} totalItems={todolist.length} handlePageClick={handlePageClick} />
-          <p>
-            {localeSet[locale].only} {todolist.filter((el) => !el.complete).length} {localeSet[locale].left}!
-          </p>
-          <Filters handleFilterChange={handleFilterChange} filter={filter} />
-          <button data-testid="deleteAll" onClick={deleteCompleted}>
-            {localeSet[locale].deleteAll}
-          </button>
-        </>
-      )}
+        {!!todolist.length && (
+          <>
+            <Pagination activePage={activePage} totalItems={todolist.length} handlePageClick={handlePageClick} />
+            <p>
+              {localeSet[locale].only} {todolist.filter((el) => !el.complete).length} {localeSet[locale].left}!
+            </p>
+            <Filters handleFilterChange={handleFilterChange} filter={filter} />
+            <button data-testid="deleteAll" onClick={deleteCompleted}>
+              {localeSet[locale].deleteAll}
+            </button>
+          </>
+        )}
+      </Wrapper>
     </LocaleContext.Provider>
   );
 }
