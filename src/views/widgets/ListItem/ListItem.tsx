@@ -16,10 +16,11 @@ interface Props {
   increasePriority: MouseEventHandler<HTMLButtonElement>;
   decreasePriority: MouseEventHandler<HTMLButtonElement>;
   complete?: boolean;
+  onDelete: MouseEventHandler<HTMLButtonElement>;
 }
 
 export const ListItem: FC<Props> = (props: Props) => {
-  const { children, onDone, id, complete = false, increasePriority, decreasePriority } = props;
+  const { children, onDone, id, onDelete, complete = false, increasePriority, decreasePriority } = props;
   return (
     <li className={styles.item}>
       <input type="checkbox" data-id={id} onChange={onDone} checked={complete} />
@@ -29,6 +30,9 @@ export const ListItem: FC<Props> = (props: Props) => {
       </button>
       <button data-id={id} onClick={decreasePriority}>
         |
+      </button>
+      <button onClick={onDelete} data-id={id}>
+        Delete
       </button>
     </li>
   );

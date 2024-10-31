@@ -153,6 +153,13 @@ function App() {
     [todolist],
   );
 
+  const handleDeleteTodo = useCallback(
+    (e) => {
+      setTodolist(todolist.filter((el) => el.id !== Number(e.currentTarget.dataset.id)));
+    },
+    [todolist],
+  );
+
   const findIndexById = (array, id) => array.findIndex((el) => el.id === +id);
 
   const increasePriority = (e) => {
@@ -225,6 +232,7 @@ function App() {
           Math.min(activePage * itemsPerPage, todolist.length),
         )}
         onDone={handleFinish}
+        onDelete={handleDeleteTodo}
       />
 
       <Pagination activePage={activePage} totalItems={todolist.length} handlePageClick={handlePageClick} />
