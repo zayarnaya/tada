@@ -211,6 +211,14 @@ function App() {
     Done: (el: Todo) => el.complete,
   };
 
+  const handleEditTodo = (e) => {
+    setTodolist(
+      todolist.map((el) =>
+        el.id === Number(e.currentTarget.dataset.id) ? { ...el, title: e.currentTarget.value } : el,
+      ),
+    );
+  };
+
   const handlePageClick = (e) => setActivePage(Number(e.currentTarget.dataset.page));
   return (
     <>
@@ -225,6 +233,7 @@ function App() {
       </button>
       <AddTodo handleAddTodo={handleAddTodo} />
       <List
+        onEdit={handleEditTodo}
         increasePriority={increasePriority}
         decreasePriority={decreasePriority}
         list={(filter === 'All' ? todolist : todolist.filter(mapFilterFuncs[filter])).slice(

@@ -14,18 +14,20 @@ interface Props {
   increasePriority: MouseEventHandler<HTMLButtonElement>;
   decreasePriority: MouseEventHandler<HTMLButtonElement>;
   onDelete: MouseEventHandler<HTMLButtonElement>;
+  onEdit: ChangeEventHandler<HTMLInputElement>;
 }
 
 export const List: FC<Props> = (props: Props) => {
-  const { children, className, list, onDone, onDelete, increasePriority, decreasePriority } = props;
+  const { children, className, list, onDone, onEdit, onDelete, increasePriority, decreasePriority } = props;
   return (
     <ul className={classNames(styles.list, className)}>
-      {list.map((el, index) => (
+      {list.map((el) => (
         <ListItem
+          onEdit={onEdit}
           onDelete={onDelete}
           increasePriority={increasePriority}
           decreasePriority={decreasePriority}
-          key={`todo#${index}`}
+          key={`todo#${el.id}`}
           onDone={onDone}
           id={el.id}
           complete={el.complete}
