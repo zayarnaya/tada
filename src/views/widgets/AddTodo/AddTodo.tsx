@@ -1,5 +1,7 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useContext } from 'react';
 import styles from './AddTodo.module.scss';
+import { LocaleContext } from '../../../utils';
+import { localeSet } from '../../../consts/localisation';
 
 interface Props {
   className?: string;
@@ -9,10 +11,11 @@ interface Props {
 
 export const AddTodo: FC<Props> = (props: Props) => {
   const { handleAddTodo } = props;
+  const locale = useContext(LocaleContext);
 
   return (
     <form data-testid="addTodoForm" className={styles.form} onSubmit={handleAddTodo}>
-      <input data-testid="addTodo" name="todo" placeholder="I need to do..." />
+      <input data-testid="addTodo" name="todo" placeholder={localeSet[locale].add} />
     </form>
   );
 };
