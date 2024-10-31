@@ -1,11 +1,10 @@
-import { FC, MouseEventHandler, ReactNode, useState } from 'react';
+import { FC, MouseEventHandler } from 'react';
 import classNames from 'classnames';
 
 import styles from './Pagination.module.scss';
 
 interface Props {
   className?: string;
-  children?: ReactNode;
   activePage?: number;
   totalItems: number;
   itemsPerPage?: number;
@@ -15,7 +14,7 @@ interface Props {
 const makePageArray = (total: number, perPage: number) => new Array(Math.ceil(total / perPage)).fill(0);
 
 export const Pagination: FC<Props> = (props: Props) => {
-  const { children, className, totalItems, activePage = 1, itemsPerPage = 10, handlePageClick } = props;
+  const { className, totalItems, activePage = 1, itemsPerPage = 10, handlePageClick } = props;
   const pages = makePageArray(totalItems, itemsPerPage);
   return (
     <div className={classNames(styles.wrapper, className)}>

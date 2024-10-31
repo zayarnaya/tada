@@ -1,9 +1,4 @@
-import { ChangeEventHandler, FC, MouseEventHandler, ReactNode, useCallback, useEffect, useState } from 'react';
-import Accordion from 'react-bootstrap/Accordion';
-import AccordionItem from 'react-bootstrap/AccordionItem';
-import AccordionHeader from 'react-bootstrap/AccordionHeader';
-import AccordionBody from 'react-bootstrap/AccordionBody';
-import AccordionButton from 'react-bootstrap/AccordionButton';
+import { ChangeEvent, ChangeEventHandler, FC, MouseEventHandler, useCallback, useState } from 'react';
 import classNames from 'classnames';
 import ConfettiExplosion from 'react-confetti-explosion';
 import styles from './ListItem.module.scss';
@@ -24,16 +19,13 @@ export const ListItem: FC<Props> = (props: Props) => {
   const { children, onDone, id, onDelete, onEdit, complete = false, increasePriority, decreasePriority } = props;
   const [isCongrats, setIsCongrats] = useState(false);
   const handleDone = useCallback(
-    (e) => {
+    (e: ChangeEvent<HTMLInputElement>) => {
       if (!complete) setIsCongrats(true);
       onDone(e);
     },
     [complete, onDone],
   );
-  //   useEffect(() => {
-  //     const timer = setTimeout(setIsCongrats, 1000, false);
-  //     return () => clearTimeout(timer);
-  //   }, [isCongrats]);
+
   return (
     <li className={styles.item} data-testid="listItem">
       {isCongrats && (

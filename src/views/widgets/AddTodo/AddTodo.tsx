@@ -1,6 +1,4 @@
-import { FC, ReactNode, useCallback, useState } from 'react';
-import classNames from 'classnames';
-
+import { FC, ReactNode } from 'react';
 import styles from './AddTodo.module.scss';
 
 interface Props {
@@ -10,13 +8,11 @@ interface Props {
 }
 
 export const AddTodo: FC<Props> = (props: Props) => {
-  const { children, className, handleAddTodo } = props;
+  const { handleAddTodo } = props;
 
   return (
-    <>
-      <form data-testid="addTodoForm" className={styles.form} onSubmit={handleAddTodo}>
-        <input data-testid="addTodo" name="todo" placeholder="I need to do..." />
-      </form>
-    </>
+    <form data-testid="addTodoForm" className={styles.form} onSubmit={handleAddTodo}>
+      <input data-testid="addTodo" name="todo" placeholder="I need to do..." />
+    </form>
   );
 };

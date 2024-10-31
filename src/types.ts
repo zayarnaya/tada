@@ -1,11 +1,11 @@
-import { ReactNode } from 'react';
-
 export type Todo = {
   id: number;
   title: string;
-  text: ReactNode;
   complete?: boolean;
-  start?: number;
-  deadline?: number;
+  start: number;
   priority?: number;
 };
+
+export type Filter = 'All' | 'Active' | 'Done';
+
+export type Tags = 'priority' | 'start';

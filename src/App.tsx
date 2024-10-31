@@ -1,152 +1,22 @@
 import { ChangeEvent, useCallback, useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
 import './App.css';
-import { AddTodo, List, Pagination } from './views/widgets';
+import { AddTodo, Filters, List, Pagination, Sorting } from './views/widgets';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Todo } from './types';
-import classNames from 'classnames';
-
-const mock: Todo[] = [
-  {
-    id: 1,
-    title: 'My first todo',
-    text: (
-      <>
-        <p>Need to do something</p>
-      </>
-    ),
-    start: Date.now() - 300,
-  },
-  {
-    id: 2,
-    title: 'My second todo',
-    text: (
-      <>
-        <p>Need to do something GREAT</p>
-      </>
-    ),
-    start: Date.now() - 30,
-  },
-  // {
-  //   id: 4,
-  //   title: 'My third todo',
-  //   text: (
-  //     <>
-  //       <p>Need to do something GREATER</p>
-  //     </>
-  //   ),
-  //   start: Date.now() - 350,
-  // },
-  // {
-  //   id: 5,
-  //   title: 'My first todo',
-  //   text: (
-  //     <>
-  //       <p>Need to do something</p>
-  //     </>
-  //   ),
-  //   start: Date.now() - 300,
-  // },
-  // {
-  //   id: 6,
-  //   title: 'My second todo',
-  //   text: (
-  //     <>
-  //       <p>Need to do something GREAT</p>
-  //     </>
-  //   ),
-  //   start: Date.now() - 30,
-  // },
-  // {
-  //   id: 7,
-  //   title: 'My third todo',
-  //   text: (
-  //     <>
-  //       <p>Need to do something GREATER</p>
-  //     </>
-  //   ),
-  //   start: Date.now() - 350,
-  // },
-  // {
-  //   id: 8,
-  //   title: 'My first todo',
-  //   text: (
-  //     <>
-  //       <p>Need to do something</p>
-  //     </>
-  //   ),
-  //   start: Date.now() - 300,
-  // },
-  // {
-  //   id: 9,
-  //   title: 'My second todo',
-  //   text: (
-  //     <>
-  //       <p>Need to do something GREAT</p>
-  //     </>
-  //   ),
-  //   start: Date.now() - 30,
-  // },
-  // {
-  //   id: 10,
-  //   title: 'My third todo',
-  //   text: (
-  //     <>
-  //       <p>Need to do something GREATER</p>
-  //     </>
-  //   ),
-  //   start: Date.now() - 350,
-  // },
-  // {
-  //   id: 11,
-  //   title: 'My first todo',
-  //   text: (
-  //     <>
-  //       <p>Need to do something</p>
-  //     </>
-  //   ),
-  //   start: Date.now() - 300,
-  // },
-  // {
-  //   id: 12,
-  //   title: 'My second todo',
-  //   text: (
-  //     <>
-  //       <p>Need to do something GREAT</p>
-  //     </>
-  //   ),
-  //   start: Date.now() - 30,
-  // },
-  // {
-  //   id: 13,
-  //   title: 'My third todo',
-  //   text: (
-  //     <>
-  //       <p>Need to do something GREATER</p>
-  //     </>
-  //   ),
-  //   start: Date.now() - 350,
-  // },
-];
-
-const addPriority = (array) => array.map((el, index) => ({ ...el, priority: index }));
-const addDate = (array) => array.map((el, index) => ({ ...el, start: Date.now() - 100 * index }));
+import { Filter, Tags, Todo } from './types';
+import { addPriority, changePriority, sortByTag } from './utils';
+import { itemsPerPage, mapFilterFuncs } from './consts/consts';
 
 function App() {
-  const [todolist, setTodolist] = useState<Todo[]>(addPriority(addDate(mock)));
+  const [todolist, setTodolist] = useState<Todo[]>([]);
   const [filter, setFilter] = useState<'All' | 'Active' | 'Done'>('All');
   const [activePage, setActivePage] = useState(1);
-  const itemsPerPage = 10;
+
   const handleAddTodo = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const data = new FormData(e.currentTarget);
       const todo = data.get('todo') as string;
-      const text = data.get('text') as string;
-      setTodolist(
-        addPriority([{ title: todo, text: text || '', id: todolist.length + 1, start: Date.now() }].concat(todolist)),
-      );
+      setTodolist(addPriority([{ title: todo, id: todolist.length + 1, start: Date.now() }].concat(todolist)));
       e.currentTarget.reset();
       setActivePage(1);
     },
@@ -154,31 +24,26 @@ function App() {
   );
 
   const handleDeleteTodo = useCallback(
-    (e) => {
+    (e: React.MouseEvent<HTMLButtonElement>) => {
       setTodolist(todolist.filter((el) => el.id !== Number(e.currentTarget.dataset.id)));
     },
     [todolist],
   );
 
-  const findIndexById = (array, id) => array.findIndex((el) => el.id === +id);
-
-  const increasePriority = (e) => {
-    const { id } = e.currentTarget.dataset;
-    const newList = [...todolist];
-    const index = findIndexById(newList, id);
-    console.log(id, index);
-    if (index > 0) [newList[index], newList[index - 1]] = [newList[index - 1], newList[index]];
-    setTodolist(addPriority(newList));
-  };
-  const decreasePriority = (e) => {
-    const { id } = e.currentTarget.dataset;
-    const newList = [...todolist];
-    const index = findIndexById(newList, id);
-    console.log(id, index);
-    if (index >= 0 && index < todolist.length - 1)
-      [newList[index], newList[index + 1]] = [newList[index + 1], newList[index]];
-    setTodolist(addPriority(newList));
-  };
+  const increasePriority = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      const { id } = e.currentTarget.dataset;
+      if (id) setTodolist(changePriority(todolist, id));
+    },
+    [todolist],
+  );
+  const decreasePriority = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      const { id } = e.currentTarget.dataset;
+      if (id) setTodolist(changePriority(todolist, id, true));
+    },
+    [todolist],
+  );
 
   const handleFinish = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -190,51 +55,39 @@ function App() {
     [todolist],
   );
 
-  const handleFilterChange = (e) => {
+  const handleFilterChange = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     const { filter } = e.currentTarget.dataset;
-    setFilter(filter);
-  };
+    setFilter(filter as Filter);
+  }, []);
 
-  const deleteCompleted = () => {
+  const deleteCompleted = useCallback(() => {
     setTodolist(todolist.filter((el) => !el.complete));
-  };
+  }, [todolist]);
 
-  const sortByTag = (tag: 'priority' | 'start' | 'deadline') => {
-    const newList = [...todolist.sort((a, b) => Number(a[tag]) - Number(b[tag]))];
-    setTodolist(newList);
-  };
+  const handleSorting = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => setTodolist(sortByTag(todolist, e.currentTarget.dataset.tag as Tags)),
+    [todolist],
+  );
 
-  const sort = (e) => sortByTag(e.currentTarget.dataset.tag);
+  const handleEditTodo = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setTodolist(
+        todolist.map((el) =>
+          el.id === Number(e.currentTarget.dataset.id) ? { ...el, title: e.currentTarget.value } : el,
+        ),
+      );
+    },
+    [todolist],
+  );
 
-  const mapFilterFuncs = {
-    Active: (el: Todo) => !el.complete,
-    Done: (el: Todo) => el.complete,
-  };
-
-  const handleEditTodo = (e) => {
-    setTodolist(
-      todolist.map((el) =>
-        el.id === Number(e.currentTarget.dataset.id) ? { ...el, title: e.currentTarget.value } : el,
-      ),
-    );
-  };
-
-  const handlePageClick = (e) => setActivePage(Number(e.currentTarget.dataset.page));
+  const handlePageClick = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => setActivePage(Number(e.currentTarget.dataset.page)),
+    [],
+  );
   return (
     <>
-      {!!todolist.length && (
-        <>
-          <button data-tag="priority" onClick={sort}>
-            Priority
-          </button>
-          <button data-tag="start" onClick={sort}>
-            Start
-          </button>
-          <button data-tag="deadline" onClick={sort}>
-            Deadline
-          </button>
-        </>
-      )}
+      {!todolist.length && <p>Hi! Please type your first todo right here</p>}
+      {!!todolist.length && <Sorting sort={handleSorting} />}
       <AddTodo handleAddTodo={handleAddTodo} />
       <List
         onEdit={handleEditTodo}
@@ -252,28 +105,10 @@ function App() {
         <>
           <Pagination activePage={activePage} totalItems={todolist.length} handlePageClick={handlePageClick} />
           <p>Only {todolist.filter((el) => !el.complete).length} left!</p>
-          <button
-            onClick={handleFilterChange}
-            data-filter="All"
-            className={classNames('button', filter === 'All' && 'active')}
-          >
-            All
+          <Filters handleFilterChange={handleFilterChange} filter={filter} />
+          <button data-testid="deleteAll" onClick={deleteCompleted}>
+            Delete completed tasks
           </button>
-          <button
-            onClick={handleFilterChange}
-            data-filter="Active"
-            className={classNames('button', filter === 'Active' && 'active')}
-          >
-            Active
-          </button>
-          <button
-            onClick={handleFilterChange}
-            data-filter="Done"
-            className={classNames('button', filter === 'Done' && 'active')}
-          >
-            Done
-          </button>
-          <button onClick={deleteCompleted}>Delete completed tasks</button>
         </>
       )}
     </>
