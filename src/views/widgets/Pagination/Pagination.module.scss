@@ -1,0 +1,26 @@
+.wrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.pages {
+  display: flex;
+  gap: 5px;
+}
+
+.page {
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: rgba($color: blue, $alpha: 0.5);
+  }
+
+  &.active {
+    background-color: blue;
+    color: white;
+    border-radius: 2px;
+  }
+}

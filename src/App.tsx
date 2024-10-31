@@ -2,7 +2,7 @@ import { ChangeEvent, useCallback, useState } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
-import { AddTodo, List } from './views/widgets';
+import { AddTodo, List, Pagination } from './views/widgets';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Todo } from './types';
 import classNames from 'classnames';
@@ -136,6 +136,8 @@ const addDate = (array) => array.map((el, index) => ({ ...el, start: Date.now() 
 function App() {
   const [todolist, setTodolist] = useState<Todo[]>(addPriority(addDate(mock)));
   const [filter, setFilter] = useState<'All' | 'Active' | 'Done'>('All');
+  const [activePage, setActivePage] = useState(1);
+  const itemsPerPage = 10;
   const handleAddTodo = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -146,6 +148,7 @@ function App() {
         addPriority([{ title: todo, text: text || '', id: todolist.length + 1, start: Date.now() }].concat(todolist)),
       );
       e.currentTarget.reset();
+      setActivePage(1);
     },
     [todolist],
   );
@@ -196,6 +199,12 @@ function App() {
 
   const sort = (e) => sortByTag(e.currentTarget.dataset.tag);
 
+  const mapFilterFuncs = {
+    Active: (el: Todo) => !el.complete,
+    Done: (el: Todo) => el.complete,
+  };
+
+  const handlePageClick = (e) => setActivePage(Number(e.currentTarget.dataset.page));
   return (
     <>
       <button data-tag="priority" onClick={sort}>
@@ -208,30 +217,17 @@ function App() {
         Deadline
       </button>
       <AddTodo handleAddTodo={handleAddTodo} />
-      {filter === 'All' && (
-        <List
-          increasePriority={increasePriority}
-          decreasePriority={decreasePriority}
-          list={todolist}
-          onDone={handleFinish}
-        />
-      )}
-      {filter === 'Active' && (
-        <List
-          increasePriority={increasePriority}
-          decreasePriority={decreasePriority}
-          list={todolist.filter((el) => !el.complete)}
-          onDone={handleFinish}
-        />
-      )}
-      {filter === 'Done' && (
-        <List
-          increasePriority={increasePriority}
-          decreasePriority={decreasePriority}
-          list={todolist.filter((el) => el.complete)}
-          onDone={handleFinish}
-        />
-      )}
+      <List
+        increasePriority={increasePriority}
+        decreasePriority={decreasePriority}
+        list={(filter === 'All' ? todolist : todolist.filter(mapFilterFuncs[filter])).slice(
+          (activePage - 1) * itemsPerPage,
+          Math.min(activePage * itemsPerPage, todolist.length),
+        )}
+        onDone={handleFinish}
+      />
+
+      <Pagination activePage={activePage} totalItems={todolist.length} handlePageClick={handlePageClick} />
       <p>Only {todolist.filter((el) => !el.complete).length} left!</p>
       <button
         onClick={handleFilterChange}
