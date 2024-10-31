@@ -14,8 +14,8 @@ export const AddTodo: FC<Props> = (props: Props) => {
 
   return (
     <>
-      <form className={styles.form} onSubmit={handleAddTodo}>
-        <input name="todo" placeholder="I need to do..." />
+      <form data-testid="addTodoForm" className={styles.form} onSubmit={handleAddTodo}>
+        <input data-testid="addTodo" name="todo" placeholder="I need to do..." />
       </form>
     </>
   );

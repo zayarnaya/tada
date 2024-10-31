@@ -28,106 +28,106 @@ const mock: Todo[] = [
     ),
     start: Date.now() - 30,
   },
-  {
-    id: 4,
-    title: 'My third todo',
-    text: (
-      <>
-        <p>Need to do something GREATER</p>
-      </>
-    ),
-    start: Date.now() - 350,
-  },
-  {
-    id: 5,
-    title: 'My first todo',
-    text: (
-      <>
-        <p>Need to do something</p>
-      </>
-    ),
-    start: Date.now() - 300,
-  },
-  {
-    id: 6,
-    title: 'My second todo',
-    text: (
-      <>
-        <p>Need to do something GREAT</p>
-      </>
-    ),
-    start: Date.now() - 30,
-  },
-  {
-    id: 7,
-    title: 'My third todo',
-    text: (
-      <>
-        <p>Need to do something GREATER</p>
-      </>
-    ),
-    start: Date.now() - 350,
-  },
-  {
-    id: 8,
-    title: 'My first todo',
-    text: (
-      <>
-        <p>Need to do something</p>
-      </>
-    ),
-    start: Date.now() - 300,
-  },
-  {
-    id: 9,
-    title: 'My second todo',
-    text: (
-      <>
-        <p>Need to do something GREAT</p>
-      </>
-    ),
-    start: Date.now() - 30,
-  },
-  {
-    id: 10,
-    title: 'My third todo',
-    text: (
-      <>
-        <p>Need to do something GREATER</p>
-      </>
-    ),
-    start: Date.now() - 350,
-  },
-  {
-    id: 11,
-    title: 'My first todo',
-    text: (
-      <>
-        <p>Need to do something</p>
-      </>
-    ),
-    start: Date.now() - 300,
-  },
-  {
-    id: 12,
-    title: 'My second todo',
-    text: (
-      <>
-        <p>Need to do something GREAT</p>
-      </>
-    ),
-    start: Date.now() - 30,
-  },
-  {
-    id: 13,
-    title: 'My third todo',
-    text: (
-      <>
-        <p>Need to do something GREATER</p>
-      </>
-    ),
-    start: Date.now() - 350,
-  },
+  // {
+  //   id: 4,
+  //   title: 'My third todo',
+  //   text: (
+  //     <>
+  //       <p>Need to do something GREATER</p>
+  //     </>
+  //   ),
+  //   start: Date.now() - 350,
+  // },
+  // {
+  //   id: 5,
+  //   title: 'My first todo',
+  //   text: (
+  //     <>
+  //       <p>Need to do something</p>
+  //     </>
+  //   ),
+  //   start: Date.now() - 300,
+  // },
+  // {
+  //   id: 6,
+  //   title: 'My second todo',
+  //   text: (
+  //     <>
+  //       <p>Need to do something GREAT</p>
+  //     </>
+  //   ),
+  //   start: Date.now() - 30,
+  // },
+  // {
+  //   id: 7,
+  //   title: 'My third todo',
+  //   text: (
+  //     <>
+  //       <p>Need to do something GREATER</p>
+  //     </>
+  //   ),
+  //   start: Date.now() - 350,
+  // },
+  // {
+  //   id: 8,
+  //   title: 'My first todo',
+  //   text: (
+  //     <>
+  //       <p>Need to do something</p>
+  //     </>
+  //   ),
+  //   start: Date.now() - 300,
+  // },
+  // {
+  //   id: 9,
+  //   title: 'My second todo',
+  //   text: (
+  //     <>
+  //       <p>Need to do something GREAT</p>
+  //     </>
+  //   ),
+  //   start: Date.now() - 30,
+  // },
+  // {
+  //   id: 10,
+  //   title: 'My third todo',
+  //   text: (
+  //     <>
+  //       <p>Need to do something GREATER</p>
+  //     </>
+  //   ),
+  //   start: Date.now() - 350,
+  // },
+  // {
+  //   id: 11,
+  //   title: 'My first todo',
+  //   text: (
+  //     <>
+  //       <p>Need to do something</p>
+  //     </>
+  //   ),
+  //   start: Date.now() - 300,
+  // },
+  // {
+  //   id: 12,
+  //   title: 'My second todo',
+  //   text: (
+  //     <>
+  //       <p>Need to do something GREAT</p>
+  //     </>
+  //   ),
+  //   start: Date.now() - 30,
+  // },
+  // {
+  //   id: 13,
+  //   title: 'My third todo',
+  //   text: (
+  //     <>
+  //       <p>Need to do something GREATER</p>
+  //     </>
+  //   ),
+  //   start: Date.now() - 350,
+  // },
 ];
 
 const addPriority = (array) => array.map((el, index) => ({ ...el, priority: index }));
@@ -222,15 +222,19 @@ function App() {
   const handlePageClick = (e) => setActivePage(Number(e.currentTarget.dataset.page));
   return (
     <>
-      <button data-tag="priority" onClick={sort}>
-        Priority
-      </button>
-      <button data-tag="start" onClick={sort}>
-        Start
-      </button>
-      <button data-tag="deadline" onClick={sort}>
-        Deadline
-      </button>
+      {!!todolist.length && (
+        <>
+          <button data-tag="priority" onClick={sort}>
+            Priority
+          </button>
+          <button data-tag="start" onClick={sort}>
+            Start
+          </button>
+          <button data-tag="deadline" onClick={sort}>
+            Deadline
+          </button>
+        </>
+      )}
       <AddTodo handleAddTodo={handleAddTodo} />
       <List
         onEdit={handleEditTodo}
@@ -244,30 +248,34 @@ function App() {
         onDelete={handleDeleteTodo}
       />
 
-      <Pagination activePage={activePage} totalItems={todolist.length} handlePageClick={handlePageClick} />
-      <p>Only {todolist.filter((el) => !el.complete).length} left!</p>
-      <button
-        onClick={handleFilterChange}
-        data-filter="All"
-        className={classNames('button', filter === 'All' && 'active')}
-      >
-        All
-      </button>
-      <button
-        onClick={handleFilterChange}
-        data-filter="Active"
-        className={classNames('button', filter === 'Active' && 'active')}
-      >
-        Active
-      </button>
-      <button
-        onClick={handleFilterChange}
-        data-filter="Done"
-        className={classNames('button', filter === 'Done' && 'active')}
-      >
-        Done
-      </button>
-      <button onClick={deleteCompleted}>Delete completed tasks</button>
+      {!!todolist.length && (
+        <>
+          <Pagination activePage={activePage} totalItems={todolist.length} handlePageClick={handlePageClick} />
+          <p>Only {todolist.filter((el) => !el.complete).length} left!</p>
+          <button
+            onClick={handleFilterChange}
+            data-filter="All"
+            className={classNames('button', filter === 'All' && 'active')}
+          >
+            All
+          </button>
+          <button
+            onClick={handleFilterChange}
+            data-filter="Active"
+            className={classNames('button', filter === 'Active' && 'active')}
+          >
+            Active
+          </button>
+          <button
+            onClick={handleFilterChange}
+            data-filter="Done"
+            className={classNames('button', filter === 'Done' && 'active')}
+          >
+            Done
+          </button>
+          <button onClick={deleteCompleted}>Delete completed tasks</button>
+        </>
+      )}
     </>
   );
 }

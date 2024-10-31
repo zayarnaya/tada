@@ -35,15 +35,16 @@ export const ListItem: FC<Props> = (props: Props) => {
   //     return () => clearTimeout(timer);
   //   }, [isCongrats]);
   return (
-    <li className={styles.item}>
+    <li className={styles.item} data-testid="listItem">
       {isCongrats && (
         <>
           <ConfettiExplosion width={800} onComplete={() => setIsCongrats(false)} />
           <div />
         </>
       )}
-      <input type="checkbox" data-id={id} onChange={handleDone} checked={complete} />
+      <input data-testid="checkDone" type="checkbox" data-id={id} onChange={handleDone} checked={complete} />
       <input
+        data-testid="editTodo"
         data-id={id}
         onChange={onEdit}
         className={classNames(styles.title, complete && styles.done)}
@@ -55,7 +56,7 @@ export const ListItem: FC<Props> = (props: Props) => {
       <button data-id={id} onClick={decreasePriority}>
         |
       </button>
-      <button onClick={onDelete} data-id={id}>
+      <button data-testid="deleteTodo" onClick={onDelete} data-id={id}>
         Delete
       </button>
     </li>
