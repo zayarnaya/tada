@@ -1,4 +1,4 @@
-import { ChangeEventHandler, FC, ReactNode } from 'react';
+import { ChangeEventHandler, FC, MouseEventHandler, ReactNode } from 'react';
 
 import classNames from 'classnames';
 
@@ -11,14 +11,23 @@ interface Props {
   children?: ReactNode;
   list: Todo[];
   onDone: ChangeEventHandler<HTMLInputElement>;
+  increasePriority: MouseEventHandler<HTMLButtonElement>;
+  decreasePriority: MouseEventHandler<HTMLButtonElement>;
 }
 
 export const List: FC<Props> = (props: Props) => {
-  const { children, className, list, onDone } = props;
+  const { children, className, list, onDone, increasePriority, decreasePriority } = props;
   return (
     <ul className={classNames(styles.list, className)}>
       {list.map((el, index) => (
-        <ListItem key={`todo#${index}`} onDone={onDone} id={el.id} complete={el.complete}>
+        <ListItem
+          increasePriority={increasePriority}
+          decreasePriority={decreasePriority}
+          key={`todo#${index}`}
+          onDone={onDone}
+          id={el.id}
+          complete={el.complete}
+        >
           {el.title}
         </ListItem>
       ))}

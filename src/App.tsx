@@ -29,7 +29,97 @@ const mock: Todo[] = [
     start: Date.now() - 30,
   },
   {
-    id: 3,
+    id: 4,
+    title: 'My third todo',
+    text: (
+      <>
+        <p>Need to do something GREATER</p>
+      </>
+    ),
+    start: Date.now() - 350,
+  },
+  {
+    id: 5,
+    title: 'My first todo',
+    text: (
+      <>
+        <p>Need to do something</p>
+      </>
+    ),
+    start: Date.now() - 300,
+  },
+  {
+    id: 6,
+    title: 'My second todo',
+    text: (
+      <>
+        <p>Need to do something GREAT</p>
+      </>
+    ),
+    start: Date.now() - 30,
+  },
+  {
+    id: 7,
+    title: 'My third todo',
+    text: (
+      <>
+        <p>Need to do something GREATER</p>
+      </>
+    ),
+    start: Date.now() - 350,
+  },
+  {
+    id: 8,
+    title: 'My first todo',
+    text: (
+      <>
+        <p>Need to do something</p>
+      </>
+    ),
+    start: Date.now() - 300,
+  },
+  {
+    id: 9,
+    title: 'My second todo',
+    text: (
+      <>
+        <p>Need to do something GREAT</p>
+      </>
+    ),
+    start: Date.now() - 30,
+  },
+  {
+    id: 10,
+    title: 'My third todo',
+    text: (
+      <>
+        <p>Need to do something GREATER</p>
+      </>
+    ),
+    start: Date.now() - 350,
+  },
+  {
+    id: 11,
+    title: 'My first todo',
+    text: (
+      <>
+        <p>Need to do something</p>
+      </>
+    ),
+    start: Date.now() - 300,
+  },
+  {
+    id: 12,
+    title: 'My second todo',
+    text: (
+      <>
+        <p>Need to do something GREAT</p>
+      </>
+    ),
+    start: Date.now() - 30,
+  },
+  {
+    id: 13,
     title: 'My third todo',
     text: (
       <>
@@ -40,8 +130,11 @@ const mock: Todo[] = [
   },
 ];
 
+const addPriority = (array) => array.map((el, index) => ({ ...el, priority: index }));
+const addDate = (array) => array.map((el, index) => ({ ...el, start: Date.now() - 100 * index }));
+
 function App() {
-  const [todolist, setTodolist] = useState<Todo[]>(mock);
+  const [todolist, setTodolist] = useState<Todo[]>(addPriority(addDate(mock)));
   const [filter, setFilter] = useState<'All' | 'Active' | 'Done'>('All');
   const handleAddTodo = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -49,11 +142,33 @@ function App() {
       const data = new FormData(e.currentTarget);
       const todo = data.get('todo') as string;
       const text = data.get('text') as string;
-      setTodolist([{ title: todo, text: text || '', id: todolist.length + 1 }].concat(todolist));
+      setTodolist(
+        addPriority([{ title: todo, text: text || '', id: todolist.length + 1, start: Date.now() }].concat(todolist)),
+      );
       e.currentTarget.reset();
     },
     [todolist],
   );
+
+  const findIndexById = (array, id) => array.findIndex((el) => el.id === +id);
+
+  const increasePriority = (e) => {
+    const { id } = e.currentTarget.dataset;
+    const newList = [...todolist];
+    const index = findIndexById(newList, id);
+    console.log(id, index);
+    if (index > 0) [newList[index], newList[index - 1]] = [newList[index - 1], newList[index]];
+    setTodolist(addPriority(newList));
+  };
+  const decreasePriority = (e) => {
+    const { id } = e.currentTarget.dataset;
+    const newList = [...todolist];
+    const index = findIndexById(newList, id);
+    console.log(id, index);
+    if (index >= 0 && index < todolist.length - 1)
+      [newList[index], newList[index + 1]] = [newList[index + 1], newList[index]];
+    setTodolist(addPriority(newList));
+  };
 
   const handleFinish = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -73,12 +188,50 @@ function App() {
   const deleteCompleted = () => {
     setTodolist(todolist.filter((el) => !el.complete));
   };
+
+  const sortByTag = (tag: 'priority' | 'start' | 'deadline') => {
+    const newList = [...todolist.sort((a, b) => Number(a[tag]) - Number(b[tag]))];
+    setTodolist(newList);
+  };
+
+  const sort = (e) => sortByTag(e.currentTarget.dataset.tag);
+
   return (
     <>
+      <button data-tag="priority" onClick={sort}>
+        Priority
+      </button>
+      <button data-tag="start" onClick={sort}>
+        Start
+      </button>
+      <button data-tag="deadline" onClick={sort}>
+        Deadline
+      </button>
       <AddTodo handleAddTodo={handleAddTodo} />
-      {filter === 'All' && <List list={todolist} onDone={handleFinish} />}
-      {filter === 'Active' && <List list={todolist.filter((el) => !el.complete)} onDone={handleFinish} />}
-      {filter === 'Done' && <List list={todolist.filter((el) => el.complete)} onDone={handleFinish} />}
+      {filter === 'All' && (
+        <List
+          increasePriority={increasePriority}
+          decreasePriority={decreasePriority}
+          list={todolist}
+          onDone={handleFinish}
+        />
+      )}
+      {filter === 'Active' && (
+        <List
+          increasePriority={increasePriority}
+          decreasePriority={decreasePriority}
+          list={todolist.filter((el) => !el.complete)}
+          onDone={handleFinish}
+        />
+      )}
+      {filter === 'Done' && (
+        <List
+          increasePriority={increasePriority}
+          decreasePriority={decreasePriority}
+          list={todolist.filter((el) => el.complete)}
+          onDone={handleFinish}
+        />
+      )}
       <p>Only {todolist.filter((el) => !el.complete).length} left!</p>
       <button
         onClick={handleFilterChange}
