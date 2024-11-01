@@ -5,4 +5,4 @@ export const mapFilterFuncs = {
   Done: (el: Todo) => el.complete,
 };
 
-export const itemsPerPage = 10;
+export const itemsPerPage = 5;

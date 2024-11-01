@@ -5,13 +5,13 @@
   gap: 20px;
   list-style-type: none;
   width: 500px;
-  height: calc(100vh - 152px - 450px);
+  min-height: calc(100vh - 152px - 450px);
   flex-wrap: wrap;
 }
 
 @media screen and (max-width: 600px) {
   .list {
     width: 100%;
-    height: fit-content;
+    min-height: unset;
   }
 }

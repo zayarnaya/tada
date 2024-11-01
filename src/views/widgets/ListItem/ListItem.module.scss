@@ -15,8 +15,12 @@
   }
 }
 
-.title {
+input.title,
+input.title:focus,
+input.title:active {
   margin: 0;
+  font-family: 'Caveat';
+  font-size: 2em;
   &.done {
     color: var(--text-fade);
     text-decoration: line-through;
