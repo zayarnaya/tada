@@ -24,10 +24,11 @@
 }
 
 .checkbox:checked + .label::before {
-  background-image: url('../../../assets/check.svg');
-  background-size: contain;
-  background-position: center center;
-  background-repeat: no-repeat;
+  mask-image: url('../../../assets/check.svg');
+  mask-size: contain;
+  mask-position: center center;
+  mask-repeat: no-repeat;
+  background-color: var(--text);
   border: none;
   width: 32px;
   height: 32px;

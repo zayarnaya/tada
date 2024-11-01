@@ -1,0 +1,46 @@
+.header {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  padding: 20px;
+  gap: 20px;
+  width: 100%;
+  border-bottom: 2px solid var(--background-second);
+  box-shadow: 0px 3px 10px 0px var(--shadow);
+  -webkit-box-shadow: 0px 3px 10px 0px var(--shadow);
+  -moz-box-shadow: 0px 3px 10px 0px var(--shadow);
+  color: var(--text-accent);
+}
+
+.cred {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  font-family: 'Rubic';
+  font-size: 60px;
+  font-weight: bold;
+}
+
+.desc {
+  font-size: smaller;
+}
+
+.buttons {
+  display: flex;
+  gap: 40px;
+  align-items: flex-end;
+}
+
+.themes {
+  display: flex;
+  gap: 5px;
+  align-items: flex-end;
+}

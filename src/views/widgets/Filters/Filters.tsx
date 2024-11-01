@@ -5,6 +5,7 @@ import styles from './Filters.module.scss';
 import { Filter } from '../../../types';
 import { LocaleContext } from '../../../utils';
 import { localeSet } from '../../../consts/localisation';
+import { Button } from '../../UIKit';
 
 interface Props {
   handleFilterChange: React.MouseEventHandler<HTMLButtonElement>;
@@ -16,27 +17,27 @@ export const Filters: FC<Props> = (props: Props) => {
   const locale = useContext(LocaleContext);
   return (
     <div className={styles.wrapper}>
-      <button
+      <Button
         onClick={handleFilterChange}
         data-filter="All"
         className={classNames('button', filter === 'All' && 'active')}
       >
         {localeSet[locale].all}
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={handleFilterChange}
         data-filter="Active"
         className={classNames('button', filter === 'Active' && 'active')}
       >
         {localeSet[locale].active}
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={handleFilterChange}
         data-filter="Done"
         className={classNames('button', filter === 'Done' && 'active')}
       >
         {localeSet[locale].done}
-      </button>
+      </Button>
     </div>
   );
 };

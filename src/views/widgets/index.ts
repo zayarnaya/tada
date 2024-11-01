@@ -4,3 +4,6 @@ export { AddTodo } from './AddTodo/AddTodo';
 export { Pagination } from './Pagination/Pagination';
 export { Filters } from './Filters/Filters';
 export { Sorting } from './Sorting/Sorting';
+export { ContextWrapper } from './ContextWrapper/ContextWrapper';
+export { Wrapper } from './Wrapper/Wrapper';
+export { Header } from './Header/Header';

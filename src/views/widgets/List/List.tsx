@@ -20,7 +20,7 @@ export const List: FC<Props> = (props: Props) => {
   const { className, list, onDone, onEdit, onDelete, increasePriority, decreasePriority } = props;
   return (
     <ul className={classNames(styles.list, className)}>
-      {list.map((el) => (
+      {list.map((el, index) => (
         <ListItem
           onEdit={onEdit}
           onDelete={onDelete}
@@ -30,6 +30,8 @@ export const List: FC<Props> = (props: Props) => {
           onDone={onDone}
           id={el.id}
           complete={el.complete}
+          first={index === 0}
+          last={index === list.length - 1}
         >
           {el.title}
         </ListItem>

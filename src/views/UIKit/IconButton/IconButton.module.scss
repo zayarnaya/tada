@@ -3,6 +3,7 @@
   mask-position: center;
   mask-size: 80%;
   background-color: var(--text);
+  padding: 0;
 
   &.active {
     background-color: var(--text-accent);
@@ -12,12 +13,19 @@
     transform: scale(1.1);
   }
 
+  &:disabled {
+    background-color: var(--text-fade);
+    &:hover {
+      transform: none;
+      cursor: default;
+    }
+  }
+
   &.arrowUp {
     mask-image: url('../../../assets/arrow-up.svg');
   }
   &.arrowDown {
-    mask-image: url('../../../assets/arrow-up.svg');
-    transform: rotate(180deg);
+    mask-image: url('../../../assets/arrow-down.svg');
   }
   &.lightTheme {
     mask-image: url('../../../assets/sun.svg');
@@ -27,13 +35,14 @@
   }
   &.delete {
     mask-image: url('../../../assets/trash3.svg');
+    background-position: center bottom;
   }
 }
 
 .arrowUp,
 .arrowDown {
-  width: 20px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
 }
 
 .delete {

@@ -3,23 +3,25 @@ import { FC, MouseEventHandler, useContext } from 'react';
 import styles from './Sorting.module.scss';
 import { localeSet } from '../../../consts/localisation';
 import { LocaleContext } from '../../../utils';
+import { Button } from '../../UIKit';
 
 interface Props {
   sort: MouseEventHandler<HTMLButtonElement>;
+  activeTag?: string;
 }
 
 export const Sorting: FC<Props> = (props: Props) => {
-  const { sort } = props;
+  const { sort, activeTag = 'priority' } = props;
   const locale = useContext(LocaleContext);
   return (
     <div className={styles.wrapper}>
       {' '}
-      <button data-tag="priority" onClick={sort}>
+      <Button data-tag="priority" active={activeTag === 'priority'} onClick={sort}>
         {localeSet[locale].priority}
-      </button>
-      <button data-tag="start" onClick={sort}>
+      </Button>
+      <Button data-tag="start" active={activeTag === 'start'} onClick={sort}>
         {localeSet[locale].start}
-      </button>
+      </Button>
     </div>
   );
 };

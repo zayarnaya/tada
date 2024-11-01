@@ -1,19 +1,19 @@
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import './App.css';
 import { AddTodo, ContextWrapper, Filters, Header, List, Pagination, Sorting, Wrapper } from './views/widgets';
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import { Filter, Tags, Todo } from './types';
 import { addPriority, changePriority, getSavedTodos, LocaleContext, sortByTag, ThemeContext } from './utils';
 import { itemsPerPage, mapFilterFuncs } from './consts/consts';
 import { localeSet } from './consts/localisation';
-import classNames from 'classnames';
-import { Main } from './views/layouts';
+import { ListFooter, Main } from './views/layouts';
+import { Button } from './views/UIKit';
 
 function App() {
   const todos = getSavedTodos();
   const [todolist, setTodolist] = useState<Todo[]>(todos);
   const [filter, setFilter] = useState<Filter>('All');
   const [activePage, setActivePage] = useState(1);
+  const [activeTag, setActiveTag] = useState('priority');
   const [locale, setLocale] = useState<'en' | 'ru'>('en');
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
@@ -75,7 +75,10 @@ function App() {
   }, [todolist]);
 
   const handleSorting = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => setTodolist(sortByTag(todolist, e.currentTarget.dataset.tag as Tags)),
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      setTodolist(sortByTag(todolist, e.currentTarget.dataset.tag as Tags));
+      setActiveTag(e.currentTarget.dataset.tag || 'priority');
+    },
     [todolist],
   );
 
@@ -109,8 +112,9 @@ function App() {
           <Wrapper>
             <Header handleLocaleChange={handleLocaleChange} handleThemeChange={handleThemeChange} />
             <Main>
-              {!todolist.length && <p>{localeSet[locale].greet}</p>}
-              {!!todolist.length && <Sorting sort={handleSorting} />}
+              <h1 className="heading">{localeSet[locale].heading}</h1>
+              {!todolist.length && <p className="greet">{localeSet[locale].greet}</p>}
+              {!!todolist.length && <Sorting sort={handleSorting} activeTag={activeTag} />}
               <AddTodo handleAddTodo={handleAddTodo} />
               <List
                 onEdit={handleEditTodo}
@@ -127,13 +131,20 @@ function App() {
               {!!todolist.length && (
                 <>
                   <Pagination activePage={activePage} totalItems={todolist.length} handlePageClick={handlePageClick} />
-                  <p>
-                    {localeSet[locale].only} {todolist.filter((el) => !el.complete).length} {localeSet[locale].left}!
-                  </p>
-                  <Filters handleFilterChange={handleFilterChange} filter={filter} />
-                  <button data-testid="deleteAll" onClick={deleteCompleted}>
-                    {localeSet[locale].deleteAll}
-                  </button>
+                  <ListFooter>
+                    <p className="todos-left">
+                      {todolist.some((el) => !el.complete) && (
+                        <>
+                          {localeSet[locale].only} {todolist.filter((el) => !el.complete).length}{' '}
+                          {localeSet[locale].left}!
+                        </>
+                      )}
+                    </p>
+                    <Filters handleFilterChange={handleFilterChange} filter={filter} />
+                    <Button data-testid="deleteAll" onClick={deleteCompleted}>
+                      {localeSet[locale].deleteAll}
+                    </Button>
+                  </ListFooter>
                 </>
               )}
             </Main>
