@@ -1,11 +1,11 @@
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import './App.css';
-import { AddTodo, ContextWrapper, Filters, Header, List, Pagination, Sorting, Wrapper } from './views/widgets';
+import { AddTodo, ContextWrapper, Filters, Header, List, Pagination, Sorting } from './views/widgets';
 import { Filter, Tags, Todo } from './types';
 import { addPriority, changePriority, getSavedTodos, LocaleContext, sortByTag, ThemeContext } from './utils';
 import { itemsPerPage, mapFilterFuncs } from './consts/consts';
 import { localeSet } from './consts/localisation';
-import { ListFooter, Main } from './views/layouts';
+import { ListFooter, Main, Wrapper } from './views/layouts';
 import { Button } from './views/UIKit';
 
 function App() {
@@ -105,6 +105,7 @@ function App() {
   const handleThemeChange = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     setTheme(e.currentTarget.dataset.theme as 'light' | 'dark');
   }, []);
+
   return (
     <LocaleContext.Provider value={locale}>
       <ThemeContext.Provider value={theme}>

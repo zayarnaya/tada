@@ -5,31 +5,31 @@ import styles from './ListItem.module.scss';
 import { Checkbox, IconButton, Input } from '../../UIKit';
 
 interface Props {
-  className?: string;
   children?: string;
   id: number;
-  onDone: ChangeEventHandler<HTMLInputElement>;
-  increasePriority: MouseEventHandler<HTMLButtonElement>;
-  decreasePriority: MouseEventHandler<HTMLButtonElement>;
-  complete?: boolean;
-  onDelete: MouseEventHandler<HTMLButtonElement>;
-  onEdit: ChangeEventHandler<HTMLInputElement>;
   first: boolean;
   last: boolean;
+  complete?: boolean;
+  onDone: ChangeEventHandler<HTMLInputElement>;
+  onEdit: ChangeEventHandler<HTMLInputElement>;
+  onDelete: MouseEventHandler<HTMLButtonElement>;
+  increasePriority: MouseEventHandler<HTMLButtonElement>;
+  decreasePriority: MouseEventHandler<HTMLButtonElement>;
 }
 
 export const ListItem: FC<Props> = (props: Props) => {
   const {
     children,
-    onDone,
     id,
-    onDelete,
-    onEdit,
-    complete = false,
-    increasePriority,
-    decreasePriority,
     first,
     last,
+    complete = false,
+    onDone,
+    onEdit,
+    onDelete,
+
+    increasePriority,
+    decreasePriority,
   } = props;
   const [isCongrats, setIsCongrats] = useState(false);
   const handleDone = useCallback(

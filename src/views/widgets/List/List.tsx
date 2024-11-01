@@ -10,10 +10,10 @@ interface Props {
   className?: string;
   list: Todo[];
   onDone: ChangeEventHandler<HTMLInputElement>;
+  onEdit: ChangeEventHandler<HTMLInputElement>;
+  onDelete: MouseEventHandler<HTMLButtonElement>;
   increasePriority: MouseEventHandler<HTMLButtonElement>;
   decreasePriority: MouseEventHandler<HTMLButtonElement>;
-  onDelete: MouseEventHandler<HTMLButtonElement>;
-  onEdit: ChangeEventHandler<HTMLInputElement>;
 }
 
 export const List: FC<Props> = (props: Props) => {

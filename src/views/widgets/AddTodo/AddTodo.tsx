@@ -1,12 +1,10 @@
-import { FC, ReactNode, useContext } from 'react';
+import { FC, useContext } from 'react';
 import styles from './AddTodo.module.scss';
 import { LocaleContext } from '../../../utils';
 import { localeSet } from '../../../consts/localisation';
 import { Input } from '../../UIKit';
 
 interface Props {
-  className?: string;
-  children?: ReactNode;
   handleAddTodo: React.FormEventHandler;
 }
 
