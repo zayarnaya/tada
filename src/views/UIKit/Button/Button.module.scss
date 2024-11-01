@@ -1,0 +1,19 @@
+.button {
+  background-color: transparent;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &.active {
+    text-decoration: underline dotted;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:disabled {
+    color: var(--text-fade);
+  }
+}
