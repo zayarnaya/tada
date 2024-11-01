@@ -10,4 +10,5 @@ export default defineConfig({
     environment: 'happy-dom',
     setupFiles: ['src/setupTest.ts'],
   },
+  base: process.env.NODE_ENV === 'production' ? '/todo-mindbox' : '',
 });
