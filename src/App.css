@@ -1,6 +1,42 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  position: relative;
+  top: 0;
+  left: 0;
+  padding: 0;
+  margin: 0;
+  width: 100vw;
+  min-width: 320px;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: linear-gradient(var(--background-prime), var(--background-second));
+}
+
+* {
+  box-sizing: border-box;
+  color: var(--text);
+  font-family: 'Roboto', sans-serif;
+}
+
+.button.active {
+  text-decoration: underline;
+}
+
+.greet {
+  width: 500px;
   text-align: center;
+}
+
+.todos-left {
+  text-align: center;
+}
+
+.heading {
+  text-align: center;
+  font-family: 'Rubic';
+  font-weight: 300;
+  font-size: 2.5rem;
 }

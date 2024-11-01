@@ -1,0 +1,42 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: auto 320px auto;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--text-fade);
+  gap: 10px;
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+}
+
+.title {
+  margin: 0;
+  &.done {
+    color: var(--text-fade);
+    text-decoration: line-through;
+  }
+}
+
+.buttons {
+  display: flex;
+  gap: 5px;
+  align-items: flex-end;
+}
+
+@media screen and (max-width: 600px) {
+  .item {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .buttons {
+    justify-self: flex-end;
+  }
+}

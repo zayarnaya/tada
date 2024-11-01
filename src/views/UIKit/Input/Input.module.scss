@@ -1,0 +1,15 @@
+.input,
+.input:focus,
+.input:active {
+  background-color: transparent;
+  color: var(--text);
+  font-size: 1rem;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid var(--text);
+
+  &::placeholder {
+    font-size: 1rem;
+    color: var(--text-fade);
+  }
+}
