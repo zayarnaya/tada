@@ -21,10 +21,12 @@ export const Pagination: FC<Props> = (props: Props) => {
   const locale = useContext(LocaleContext);
   return (
     <div className={classNames(styles.wrapper, className)}>
-      <span>
-        {localeSet[locale].showing} {(activePage - 1) * itemsPerPage + 1} -{' '}
-        {Math.min(activePage * itemsPerPage, totalItems)} of {totalItems}
-      </span>
+      {!!totalItems && (
+        <span>
+          {localeSet[locale].showing} {(activePage - 1) * itemsPerPage + 1} -{' '}
+          {Math.min(activePage * itemsPerPage, totalItems)} of {totalItems}
+        </span>
+      )}
       <div className={styles.pages}>
         {pages.length > 1 &&
           pages.map((_, index) => (

@@ -6,7 +6,7 @@ import { Checkbox, IconButton, Input } from '../../UIKit';
 
 interface Props {
   children?: string;
-  id: number;
+  id: string;
   first: boolean;
   last: boolean;
   complete?: boolean;

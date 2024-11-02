@@ -1,6 +1,6 @@
 .wrapper {
   display: flex;
-  gap: 10px;
+  gap: 30px;
 }
 
 .pages {
@@ -13,15 +13,15 @@
   cursor: pointer;
   background-color: transparent;
   transition: all 0.3s ease;
-  padding: 0;
+  padding: 0 2px;
   font-size: 1rem;
-  margin-bottom: -2px;
 
   &:hover {
-    background-color: var(--shadow);
+    text-decoration: underline;
   }
 
   &.active {
-    font-weight: bold;
+    background-color: var(--text-fade);
+    border-radius: 2px;
   }
 }

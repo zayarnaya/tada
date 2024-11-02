@@ -69,6 +69,7 @@ function App() {
   const handleFilterChange = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     const { filter } = e.currentTarget.dataset;
     setFilter(filter as Filter);
+    setActivePage(1);
   }, []);
 
   const deleteCompleted = useCallback(() => {
@@ -130,7 +131,11 @@ function App() {
 
               {!!todolist.length && (
                 <>
-                  <Pagination activePage={activePage} totalItems={todolist.length} handlePageClick={handlePageClick} />
+                  <Pagination
+                    activePage={activePage}
+                    totalItems={(filter === 'All' ? todolist : todolist.filter(mapFilterFuncs[filter])).length}
+                    handlePageClick={handlePageClick}
+                  />
                   <ListFooter>
                     <p className="todos-left">
                       {todolist.some((el) => !el.complete) && (
