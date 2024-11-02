@@ -64,6 +64,11 @@ function App() {
     setTodolist(todolist.filter((el) => !el.complete));
   }, [todolist]);
 
+  const deleteAll = useCallback(() => {
+    setTodolist([]);
+    localStorage.clear();
+  }, []);
+
   const increasePriority = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       const { id } = e.currentTarget.dataset;
@@ -150,6 +155,9 @@ function App() {
                       {localeSet[locale].deleteAll}
                     </Button>
                   </ListFooter>
+                  <Button aria-hidden onClick={deleteAll}>
+                    Delete All (escape hatch)
+                  </Button>
                 </>
               )}
             </Main>
