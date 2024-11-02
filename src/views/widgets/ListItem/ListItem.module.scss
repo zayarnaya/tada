@@ -21,9 +21,11 @@ input.title:active {
   margin: 0;
   font-family: 'Caveat';
   font-size: 2em;
+  text-overflow: ellipsis;
   &.done {
     color: var(--text-fade);
     text-decoration: line-through;
+    border-bottom: 1px solid var(--text-fade);
   }
 }
 

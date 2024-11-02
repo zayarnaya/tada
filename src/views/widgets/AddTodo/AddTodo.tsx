@@ -14,7 +14,7 @@ export const AddTodo: FC<Props> = (props: Props) => {
 
   return (
     <form data-testid="addTodoForm" className={styles.form} onSubmit={handleAddTodo}>
-      <Input data-testid="addTodo" name="todo" placeholder={localeSet[locale].add} />
+      <Input maxLength={300} data-testid="addTodo" name="todo" placeholder={localeSet[locale].add} />
     </form>
   );
 };

@@ -2,7 +2,7 @@ import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import './App.css';
 import { AddTodo, ContextWrapper, Filters, Header, List, Pagination, Sorting } from './views/widgets';
 import { Filter, Tags, Todo } from './types';
-import { addPriority, changePriority, getSavedTodos, LocaleContext, sortByTag, ThemeContext } from './utils';
+import { addPriority, changePriority, getSavedTodos, hash, LocaleContext, sortByTag, ThemeContext } from './utils';
 import { itemsPerPage, mapFilterFuncs } from './consts/consts';
 import { localeSet } from './consts/localisation';
 import { ListFooter, Main, Wrapper } from './views/layouts';
@@ -26,7 +26,8 @@ function App() {
       e.preventDefault();
       const data = new FormData(e.currentTarget);
       const todo = data.get('todo') as string;
-      setTodolist(addPriority([{ title: todo, id: todolist.length + 1, start: Date.now() }].concat(todolist)));
+      if (todo && todo.length <= 300)
+        setTodolist(addPriority([{ title: todo, id: hash(todolist.length + 1), start: Date.now() }].concat(todolist)));
       e.currentTarget.reset();
       setActivePage(1);
     },
@@ -35,7 +36,7 @@ function App() {
 
   const handleDeleteTodo = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
-      setTodolist(todolist.filter((el) => el.id !== Number(e.currentTarget.dataset.id)));
+      setTodolist(todolist.filter((el) => el.id !== e.currentTarget.dataset.id));
     },
     [todolist],
   );
@@ -59,7 +60,7 @@ function App() {
     (e: ChangeEvent<HTMLInputElement>) => {
       const id = e.currentTarget.dataset.id;
       if (id) {
-        setTodolist(todolist.map((el) => (el.id === Number(id) ? { ...el, complete: !el.complete } : el)));
+        setTodolist(todolist.map((el) => (el.id === id ? { ...el, complete: !el.complete } : el)));
       }
     },
     [todolist],
@@ -85,9 +86,7 @@ function App() {
   const handleEditTodo = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setTodolist(
-        todolist.map((el) =>
-          el.id === Number(e.currentTarget.dataset.id) ? { ...el, title: e.currentTarget.value } : el,
-        ),
+        todolist.map((el) => (el.id === e.currentTarget.dataset.id ? { ...el, title: e.currentTarget.value } : el)),
       );
     },
     [todolist],

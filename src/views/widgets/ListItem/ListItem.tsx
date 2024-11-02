@@ -57,6 +57,7 @@ export const ListItem: FC<Props> = (props: Props) => {
           onChange={onEdit}
           className={classNames(styles.title, complete && styles.done)}
           defaultValue={children}
+          maxLength={300}
         />
         <div className={styles.buttons}>
           <IconButton disabled={first} variant="arrowUp" data-id={id} onClick={increasePriority} />
