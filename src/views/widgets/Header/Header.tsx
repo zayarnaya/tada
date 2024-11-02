@@ -24,16 +24,38 @@ export const Header: FC<Props> = (props: Props) => {
       </div>
       <div className={styles.buttons}>
         <div className={styles.locales}>
-          <Button data-locale="ru" active={locale === 'ru'} onClick={handleLocaleChange}>
+          <Button
+            aria-label={localeSet[locale].ru}
+            data-locale="ru"
+            active={locale === 'ru'}
+            onClick={handleLocaleChange}
+          >
             ru
           </Button>
-          <Button data-locale="en" active={locale === 'en'} onClick={handleLocaleChange}>
+          <Button
+            aria-label={localeSet[locale].en}
+            data-locale="en"
+            active={locale === 'en'}
+            onClick={handleLocaleChange}
+          >
             en
           </Button>
         </div>
         <div className={styles.themes}>
-          <IconButton variant="lightTheme" data-theme="light" active={theme === 'light'} onClick={handleThemeChange} />
-          <IconButton variant="darkTheme" data-theme="dark" active={theme === 'dark'} onClick={handleThemeChange} />
+          <IconButton
+            aria-hidden
+            variant="lightTheme"
+            data-theme="light"
+            active={theme === 'light'}
+            onClick={handleThemeChange}
+          />
+          <IconButton
+            aria-hidden
+            variant="darkTheme"
+            data-theme="dark"
+            active={theme === 'dark'}
+            onClick={handleThemeChange}
+          />
         </div>
       </div>
     </header>

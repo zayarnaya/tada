@@ -18,6 +18,7 @@ export const Filters: FC<Props> = (props: Props) => {
   return (
     <div className={styles.wrapper}>
       <Button
+        aria-label={localeSet[locale].all}
         onClick={handleFilterChange}
         data-filter="All"
         className={classNames('button', filter === 'All' && 'active')}
@@ -25,6 +26,7 @@ export const Filters: FC<Props> = (props: Props) => {
         {localeSet[locale].all}
       </Button>
       <Button
+        aria-label={localeSet[locale].active}
         onClick={handleFilterChange}
         data-filter="Active"
         className={classNames('button', filter === 'Active' && 'active')}
@@ -32,6 +34,7 @@ export const Filters: FC<Props> = (props: Props) => {
         {localeSet[locale].active}
       </Button>
       <Button
+        aria-label={localeSet[locale].done}
         onClick={handleFilterChange}
         data-filter="Done"
         className={classNames('button', filter === 'Done' && 'active')}

@@ -31,6 +31,7 @@ export const Pagination: FC<Props> = (props: Props) => {
         {pages.length > 1 &&
           pages.map((_, index) => (
             <button
+              aria-label={localeSet[locale].page + (index + 1)}
               data-page={index + 1}
               onClick={handlePageClick}
               key={`page#${index}`}

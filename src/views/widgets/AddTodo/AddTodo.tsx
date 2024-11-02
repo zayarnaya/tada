@@ -14,7 +14,13 @@ export const AddTodo: FC<Props> = (props: Props) => {
 
   return (
     <form data-testid="addTodoForm" className={styles.form} onSubmit={handleAddTodo}>
-      <Input maxLength={300} data-testid="addTodo" name="todo" placeholder={localeSet[locale].add} />
+      <Input
+        aria-label={localeSet[locale].addtodo}
+        maxLength={300}
+        data-testid="addTodo"
+        name="todo"
+        placeholder={localeSet[locale].add}
+      />
     </form>
   );
 };

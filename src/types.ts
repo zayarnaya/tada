@@ -9,3 +9,7 @@ export type Todo = {
 export type Filter = 'All' | 'Active' | 'Done';
 
 export type Tags = 'priority' | 'start';
+
+export type Locales = 'en' | 'ru';
+
+export type Themes = 'light' | 'dark';

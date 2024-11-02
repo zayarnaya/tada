@@ -1,7 +1,7 @@
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import './App.css';
 import { AddTodo, ContextWrapper, Filters, Header, List, Pagination, Sorting } from './views/widgets';
-import { Filter, Tags, Todo } from './types';
+import { Filter, Locales, Tags, Themes, Todo } from './types';
 import { addPriority, changePriority, getSavedTodos, hash, LocaleContext, sortByTag, ThemeContext } from './utils';
 import { itemsPerPage, mapFilterFuncs } from './consts/consts';
 import { localeSet } from './consts/localisation';
@@ -14,8 +14,8 @@ function App() {
   const [filter, setFilter] = useState<Filter>('All');
   const [activePage, setActivePage] = useState(1);
   const [activeTag, setActiveTag] = useState('priority');
-  const [locale, setLocale] = useState<'en' | 'ru'>('en');
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [locale, setLocale] = useState<Locales>('en');
+  const [theme, setTheme] = useState<Themes>('light');
 
   useEffect(() => {
     localStorage.setItem('todolist', JSON.stringify(todolist, null, 2));
@@ -34,12 +34,35 @@ function App() {
     [todolist],
   );
 
+  const handleCompleteTodo = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const id = e.currentTarget.dataset.id;
+      if (id) {
+        setTodolist(todolist.map((el) => (el.id === id ? { ...el, complete: !el.complete } : el)));
+      }
+    },
+    [todolist],
+  );
+
   const handleDeleteTodo = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       setTodolist(todolist.filter((el) => el.id !== e.currentTarget.dataset.id));
     },
     [todolist],
   );
+
+  const handleEditTodo = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setTodolist(
+        todolist.map((el) => (el.id === e.currentTarget.dataset.id ? { ...el, title: e.currentTarget.value } : el)),
+      );
+    },
+    [todolist],
+  );
+
+  const deleteCompleted = useCallback(() => {
+    setTodolist(todolist.filter((el) => !el.complete));
+  }, [todolist]);
 
   const increasePriority = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -56,39 +79,16 @@ function App() {
     [todolist],
   );
 
-  const handleFinish = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      const id = e.currentTarget.dataset.id;
-      if (id) {
-        setTodolist(todolist.map((el) => (el.id === id ? { ...el, complete: !el.complete } : el)));
-      }
-    },
-    [todolist],
-  );
-
   const handleFilterChange = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     const { filter } = e.currentTarget.dataset;
     setFilter(filter as Filter);
     setActivePage(1);
   }, []);
 
-  const deleteCompleted = useCallback(() => {
-    setTodolist(todolist.filter((el) => !el.complete));
-  }, [todolist]);
-
   const handleSorting = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       setTodolist(sortByTag(todolist, e.currentTarget.dataset.tag as Tags));
       setActiveTag(e.currentTarget.dataset.tag || 'priority');
-    },
-    [todolist],
-  );
-
-  const handleEditTodo = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setTodolist(
-        todolist.map((el) => (el.id === e.currentTarget.dataset.id ? { ...el, title: e.currentTarget.value } : el)),
-      );
     },
     [todolist],
   );
@@ -125,7 +125,7 @@ function App() {
                   (activePage - 1) * itemsPerPage,
                   Math.min(activePage * itemsPerPage, todolist.length),
                 )}
-                onDone={handleFinish}
+                onDone={handleCompleteTodo}
                 onDelete={handleDeleteTodo}
               />
 
@@ -146,7 +146,7 @@ function App() {
                       )}
                     </p>
                     <Filters handleFilterChange={handleFilterChange} filter={filter} />
-                    <Button data-testid="deleteAll" onClick={deleteCompleted}>
+                    <Button aria-label={localeSet[locale].deleteAll} data-testid="deleteAll" onClick={deleteCompleted}>
                       {localeSet[locale].deleteAll}
                     </Button>
                   </ListFooter>

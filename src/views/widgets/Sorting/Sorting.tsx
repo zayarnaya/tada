@@ -16,10 +16,15 @@ export const Sorting: FC<Props> = (props: Props) => {
   return (
     <div className={styles.wrapper}>
       {' '}
-      <Button data-tag="priority" active={activeTag === 'priority'} onClick={sort}>
+      <Button
+        aria-label={localeSet[locale].prioritySort}
+        data-tag="priority"
+        active={activeTag === 'priority'}
+        onClick={sort}
+      >
         {localeSet[locale].priority}
       </Button>
-      <Button data-tag="start" active={activeTag === 'start'} onClick={sort}>
+      <Button aria-label={localeSet[locale].startSort} data-tag="start" active={activeTag === 'start'} onClick={sort}>
         {localeSet[locale].start}
       </Button>
     </div>
