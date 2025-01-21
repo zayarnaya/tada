@@ -13,7 +13,8 @@
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "generate-pwa-assets": "pwa-assets-generator --preset minimal-2023 public/favicon.svg"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -26,6 +27,7 @@
     "@testing-library/user-event": "14.5.2",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "@vite-pwa/assets-generator": "0.2.6",
     "@vitejs/plugin-react": "^4.3.3",
     "@vitest/coverage-v8": "2.1.4",
     "classnames": "2.5.1",
