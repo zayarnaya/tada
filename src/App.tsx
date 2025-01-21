@@ -151,11 +151,16 @@ function App() {
                       )}
                     </p>
                     <Filters handleFilterChange={handleFilterChange} filter={filter} />
-                    <Button aria-label={localeSet[locale].deleteAll} data-testid="deleteAll" onClick={deleteCompleted}>
+                    <Button
+                      id="deleteCompleted"
+                      aria-label={localeSet[locale].deleteAll}
+                      data-testid="deleteAll"
+                      onClick={deleteCompleted}
+                    >
                       {localeSet[locale].deleteAll}
                     </Button>
                   </ListFooter>
-                  <Button aria-hidden onClick={deleteAll}>
+                  <Button id="clearLocalStorage" aria-hidden onClick={deleteAll}>
                     Delete All (escape hatch)
                   </Button>
                 </>

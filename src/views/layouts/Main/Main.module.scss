@@ -18,3 +18,11 @@
     gap: 10px;
   }
 }
+
+@media print {
+  .main {
+    box-shadow: unset;
+    -webkit-box-shadow: 0;
+    -moz-box-shadow: 0;
+  }
+}

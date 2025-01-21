@@ -31,3 +31,9 @@
     padding: 5px 10px;
   }
 }
+
+@media print {
+  .form {
+    display: none;
+  }
+}
