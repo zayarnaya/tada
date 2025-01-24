@@ -55,4 +55,12 @@ export default defineConfig({
     setupFiles: ['src/setupTest.ts'],
   },
   base: process.env.NODE_ENV === 'production' ? '/tada' : '',
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler',
+        silenceDeprecations: ['legacy-js-api'],
+      },
+    },
+  },
 });
